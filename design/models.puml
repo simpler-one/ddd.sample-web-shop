@@ -1,0 +1,63 @@
+@startuml
+
+class "UserAccount\n（ユーザーアカウント）" as UserAccount {
+    ID *
+    氏名 *
+    生年月日 *
+    メールアドレス
+    性別
+    住所[]
+    ---
+}
+
+
+class "Mail\n（メール）" as Mail {
+    アドレス *
+    ---
+    送信
+}
+
+
+class "Merchandise\n（商品）" as Merchendise {
+    ID *
+    名称 *
+    価格 *
+    ---
+}
+
+
+class "Seller\n（販売者）" as Seller {
+    ID *
+    名称 *
+    メールアドレス *
+    ---
+    発注
+}
+
+
+class "CreditCard\n（クレジットカード）" as CreditCard {
+    カード番号 *
+    有効期限 *
+    名義人 *
+}
+
+
+class "CreditCardCompany\n（クレジットカード会社）" as CreditCardCompany {
+    ID *
+    名称 *
+    ---
+    請求
+}
+
+
+class "Courier\n（配送業者）" as Courier {
+    ID *
+    名称 *
+    ---
+    追跡通知を要求
+}
+
+'--------------------
+
+
+@enduml

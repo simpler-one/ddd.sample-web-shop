@@ -1,0 +1,15 @@
+@startuml
+
+skinparam {
+    SequenceBox {
+        BackgroundColor #EEE
+        BorderColor #333
+    }
+
+    SequenceLifeLine {
+        BackgroundColor #EEE
+        BorderColor #555
+    }
+}
+
+@enduml

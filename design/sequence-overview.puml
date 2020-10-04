@@ -1,0 +1,25 @@
+@startuml
+
+!include ./style.puml
+
+actor User as user
+
+box
+  participant Shop as shop
+end box
+
+participant Seller as seller <<3rd Party>>
+participant CreditCardCompany as creditCardCompany <<3rd Party>>
+participant Courier as courier <<3rd Party>>
+
+
+==カートに追加==
+
+
+
+==購入&決済（クレジットカード）==
+
+
+
+
+@enduml

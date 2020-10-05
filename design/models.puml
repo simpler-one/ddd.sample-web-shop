@@ -11,12 +11,27 @@ class "UserAccount\n（ユーザーアカウント）" as UserAccount {
 }
 
 
-class "Email\n（メール）" as Email {
+class "🔒Email\n（メール）" as Email <<ValueObject>> {
   アドレス *
   ---
   送信
 }
 
+package Order {
+
+}
+
+class OrderEstimation {
+  
+}
+
+class UnitOrderEstimation <<>ValueObject> {
+  (商品, 単価, 数量)[]
+}
+
+class Order {
+  ID *
+}
 
 class "Merchandise\n（商品）" as Merchendise {
   ID *
@@ -25,7 +40,6 @@ class "Merchandise\n（商品）" as Merchendise {
   販売者
   ---
 }
-
 
 class "Seller\n（販売者）" as Seller {
   ID *🔒
@@ -40,25 +54,25 @@ package Payment {
 
 }
 
-class "CreditCard\n（クレジットカード）" as CreditCard {
-  カード番号 *🔒
-  有効期限 *🔒
-  名義人 *🔒
+class "🔒CreditCard\n（クレジットカード）" as CreditCard <<ValueObject>> {
+  カード番号 *
+  有効期限 *
+  名義人 *
 }
 
 class "CreditCardCompany\n（クレジットカード会社）" as CreditCardCompany {
-    ID *🔒
-    名称 *
-    ---
-    請求
+  ID *🔒
+  名称 *
+  ---
+  請求
 }
 
 
 class "Courier\n（配送業者）" as Courier {
-    ID *🔒
-    名称 *
-    ---
-    追跡通知を要求
+  ID *🔒
+  名称 *
+  ---
+  追跡通知を要求
 }
 
 '--------------------

@@ -1,15 +1,36 @@
 @startuml
 
 skinparam {
-    SequenceBox {
-        BackgroundColor #EEE
-        BorderColor #333
-    }
+  BackgroundColor #EEE
+  ArrowColor #08C
 
-    SequenceLifeLine {
-        BackgroundColor #EEE
-        BorderColor #555
-    }
+  SequenceBox {
+    BackgroundColor #DDD
+    BorderColor #777
+  }
+
+  SequenceLifeLine {
+    BackgroundColor #FFF
+    BorderColor #777
+  }
+
+  Actor {
+    BorderColor #555
+    BackgroundColor #FFF
+  }
+
+  Participant {
+    BackgroundColor #BFF
+    BorderColor #555
+  }
+
+  Participant<<Usecase>> {
+    BackgroundColor #BF9
+  }
+
+  Participant<<3rd Party>> {
+    BackgroundColor #BBB
+  }
 }
 
 @enduml

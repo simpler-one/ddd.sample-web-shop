@@ -6,7 +6,8 @@ class "UserAccount\n（ユーザーアカウント）" as UserAccount {
   生年月日 *
   メールアドレス
   性別
-  住所[]
+  住所
+  配送先[]
   ---
 }
 
@@ -22,11 +23,16 @@ package Order {
 }
 
 class OrderEstimation {
-  
+  単位注文見積[]
+  ---
+  注文実行
+  合計金額算出
 }
 
 class UnitOrderEstimation <<>ValueObject> {
   (商品, 単価, 数量)[]
+  ---
+  合計金額算出
 }
 
 class Order {

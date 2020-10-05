@@ -1,16 +1,18 @@
-@startuml
+@startuml DDD Models
 
 class "UserAccount\n（ユーザーアカウント）" as UserAccount {
   ID *🔒
   氏名 *
   生年月日 *
-  メールアドレス
   性別
+  電話番号
   住所
+  メールアドレス
   配送先[]
+  ウォレット *
+  注文履歴 *
   ---
 }
-
 
 class "🔒Email\n（メール）" as Email <<ValueObject>> {
   アドレス *
@@ -18,38 +20,83 @@ class "🔒Email\n（メール）" as Email <<ValueObject>> {
   送信
 }
 
+class "Cart\n（カート）" as Cart {
+  (商品, 数量)[]
+  ---
+  商品を追加
+  商品数量を変更
+  商品を削除
+  見積を作成
+}
+
 package Order {
+  class "OrderHistory\n（注文履歴）" as OrderHistory {
+    注文[]
+    ---
+    追加
+    絞り込み
+  }
 
+  class "🔒OrderEstimation\n（注文見積）" as OrderEstimation <<ValueObject>> {
+    単位注文見積[] *
+    ---
+    注文を実行
+    合計金額を算出
+  }
+
+  class "🔒UnitOrderEstimation\n（単位注文見積）" as UnitOrderEstimation <<ValueObject>> {
+    (商品, 単価, 数量)[] *
+    送料 *
+    ---
+    合計金額を算出
+    単位注文を作成
+  }
+
+  class "Order\n（注文）" as Order {
+    ID *🔒
+    単位注文[] *🔒
+    ---
+    合計金額を算出
+  }
+
+  class "UnitOrder\n（単位注文）" as UnitOrder {
+    ID *🔒
+    (商品, 単価, 数量)[] *🔒
+    送料 *🔒
+    支払情報 *
+    ステータス
+    ---
+    合計金額を算出
+    キャンセル
+  }
+
+  OrderHistory *-- Order
+
+  OrderEstimation *-- UnitOrderEstimation
+  OrderEstimation -> Order : <<Create>>
+
+  UnitOrderEstimation -> UnitOrder : <<Create>>
+
+  Order "1" *-- "1..*" UnitOrder
 }
 
-class OrderEstimation {
-  単位注文見積[]
-  ---
-  注文実行
-  合計金額算出
-}
 
-class UnitOrderEstimation <<>ValueObject> {
-  (商品, 単価, 数量)[]
-  ---
-  合計金額算出
-}
-
-class Order {
-  ID *
-}
-
-class "Merchandise\n（商品）" as Merchendise {
-  ID *
+class "Merchandise\n（商品）" as Merchandise {
+  ID *🔒
   名称 *
-  価格 *
-  販売者
+  現在価格 *
+  販売者 *
+  在庫 *
+  説明 *
+  レビュー[]
   ---
+  レビュー平均点算出
 }
 
 class "Seller\n（販売者）" as Seller {
   ID *🔒
   名称 *
+  電話番号 *
   メールアドレス *
   ---
   発注
@@ -57,31 +104,75 @@ class "Seller\n（販売者）" as Seller {
 
 
 package Payment {
+  class "Wallet\n（ウォレット）" as Wallet {
+    支払方法[]
+    ---
+    追加
+    変更
+    削除
+  }
 
-}
+  class "🔒PaymentMethod\n（支払方法）" as PaymentMethod <<ValueObject>> {
+    支払種別 *
+    振込先
+    クレジットカード
+  }
 
-class "🔒CreditCard\n（クレジットカード）" as CreditCard <<ValueObject>> {
-  カード番号 *
-  有効期限 *
-  名義人 *
-}
+  enum "PaymentType\n（支払種別）" as PaymentType {
+    クレジットカード
+    銀行振込
+    代引
+  }
 
-class "CreditCardCompany\n（クレジットカード会社）" as CreditCardCompany {
-  ID *🔒
-  名称 *
-  ---
-  請求
+  class "🔒CreditCard\n（クレジットカード）" as CreditCard <<ValueObject>> {
+    カード番号 *
+    有効期限 *
+    名義人 *
+  }
+
+  class "CreditCardCompany\n（クレジットカード会社）" as CreditCardCompany {
+    ID *🔒
+    名称 *
+    ---
+    請求
+  }
+
+  Wallet o-- PaymentMethod
+
+  PaymentMethod o-- PaymentType
+  PaymentMethod o-- CreditCard
+
+  CreditCard o-- CreditCardCompany
 }
 
 
 class "Courier\n（配送業者）" as Courier {
   ID *🔒
   名称 *
+  電話番号 *
+  メールアドレス *
   ---
-  追跡通知を要求
+  追跡
+  追跡通知を登録
 }
 
 '--------------------
+
+UserAccount "1" o- "0..1" Email
+UserAccount "1" *-l- "1" Cart
+UserAccount "1" *-- "1" Wallet
+UserAccount "1" *-- "1" OrderHistory
+
+Cart "1" o-- "0..*" Merchandise
+Cart --> OrderEstimation : <<Create>>
+
+UnitOrderEstimation "1" o-- "1" Courier
+
+UnitOrder "1" o-- "1" Courier
+UnitOrder o-- Merchandise
+
+Merchandise "1..*" o-- "1" Seller
+
 
 
 @enduml

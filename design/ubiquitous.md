@@ -4,6 +4,11 @@
 |ユーザー             |User              | |
 |ユーザーアカウント   |UserAccount       | |
 |商品                 |Merchandise       | |
+|カート      |Cart ||
+|注文見積     |OrderEstimation ||
+|単位注文見積 |UnitOrderEstimation ||
+|注文    |||
+|単位注文 |||
 |販売者               |Seller            | |
 |クレジットカード     |CreditCard        |商品購入における決済方法の1つ |
 |クレジットカード会社 |CreditCardCompany | |

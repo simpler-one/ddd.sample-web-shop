@@ -13,6 +13,9 @@ class "UserAccount\n（ユーザーアカウント）" as UserAccount {
   注文履歴 *
   ---
 }
+note right:¥
+* メールアドレスでログインするなら必須（今回はログイン考慮なし） ¥n¥
+* 住所、配送先は登録が無くても注文時に毎回指定できる（作成時に住所不要）
 
 class "🔒Email\n（メール）" as Email <<ValueObject>> {
   アドレス *
@@ -26,7 +29,7 @@ class "Cart\n（カート）" as Cart {
   商品を追加
   商品数量を変更
   商品を削除
-  見積を作成
+  注文見積を作成
 }
 
 package Order {
@@ -47,24 +50,28 @@ package Order {
   class "🔒UnitOrderEstimation\n（単位注文見積）" as UnitOrderEstimation <<ValueObject>> {
     (商品, 単価, 数量)[] *
     送料 *
+    配達業者 *
     ---
     合計金額を算出
     単位注文を作成
   }
 
-  class "Order\n（注文）" as Order {
-    ID *🔒
-    単位注文[] *🔒
+  class "🔒Order\n（注文）" as Order {
+    ID *
+    単位注文[] *
     ---
     合計金額を算出
   }
 
   class "UnitOrder\n（単位注文）" as UnitOrder {
     ID *🔒
+    日時 *🔒
     (商品, 単価, 数量)[] *🔒
     送料 *🔒
-    支払情報 *
-    ステータス
+    配達業者 *🔒
+    トラッキングID
+    支払方法 *
+    ステータス *
     ---
     合計金額を算出
     キャンセル
@@ -90,16 +97,19 @@ class "Merchandise\n（商品）" as Merchandise {
   説明 *
   レビュー[]
   ---
-  レビュー平均点算出
+  レビュー平均点を算出
 }
 
 class "Seller\n（販売者）" as Seller {
   ID *🔒
   名称 *
+  振込先 *
+  住所 *
   電話番号 *
   メールアドレス *
   ---
-  発注
+  発注を依頼
+  送金
 }
 
 
